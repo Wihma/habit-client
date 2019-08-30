@@ -140,31 +140,6 @@ const router = new Router({
     }
   ]
 })
-/*
-router.beforeEach((to, from, next) => {
-
-  // console.log(to)
-  // if (!localStorage.getItem('jwt') && to.name !== 'name' ) {
-  //   return router.push({ name: 'login' });
-  // }
-
-  return next();
-  //  if (to.matched.some(record => record.meta.requiresAuth)) {
-  //   if (USER DOES NOT EXIST IN LOCAL STORAGE) {
-  //     next({
-  //       path: '/login',
-  //       query: {
-  //         redirect: to.fullPath,
-  //       },
-  //     });
-  //   } else {
-  //     next();
-  //   }
-  // } else {
-  //   next();
-  // }
-})
-*/
 
 // Creates a `nextMiddleware()` function which not only
 // runs the default `next()` callback but also triggers
@@ -186,11 +161,6 @@ function nextFactory (context, middleware, index) {
 
 router.beforeEach((to, from, next) => {
   if (!(to.name in routerPaths)) {
-    console.log('Route Not found')
-
-    console.log({ to: to, from: from, next: next })
-
-    console.log(routerPaths.NotFound404)
     next({ path: '/404' })
   }
   if (to.meta.middleware) {

@@ -77,7 +77,7 @@ export const habits = {
       }
     },
     allArchivedHabits: (state) => {
-      if (state.habits.lenght > 0) {
+      if (state.habits.length > 0) {
         return state.habits.filter(habit => habit.active === false)
       }
     },
@@ -211,7 +211,6 @@ export const habits = {
     },
     deleteHabit: (state, habitId) => {
       // find index of deleted habit and remove it
-      console.log('delete habit')
       state.habits.splice(state.habits.findIndex((habit) => {
         return habit._id === habitId
       }), 1)
@@ -222,7 +221,6 @@ export const habits = {
     getAllHabits ({ dispatch, commit }) {
       return habitService.getAll()
         .then((habits) => {
-          // console.log({message: 'in the store', habits: habits})
           commit('setAllHabits', habits)
         })
     },
@@ -233,24 +231,17 @@ export const habits = {
         })
     },
     newHabit ({ dispatch, commit, rootState, rootGetters }, { habit }) {
-      console.log({ userId: rootGetters.currentUserId, habit: habit })
       return habitService.new(rootGetters.currentUserId, habit)
         .then(
           commit('saveHabit', { habit: habit })
         )
     },
     updateHabit ({ dispatch, commit }, { habit }) {
-      // console.log({location: 'habitStore', action: 'saveHabit'})
-      // commit('saveHabit', habit);
-
+      // should I wait for the server to update? It will reduce the respondiveness of the app.
       return habitService.update(habit)
         .then(
           commit('saveHabit', { habit: habit })
         )
-
-      // return new Promise((resolve, reject) => {
-      //   resolve('OK')
-      // });
     },
     saveTodayPerformed ({ dispatch, commit }, { habitId, dayPerformed }) {
       return habitService.performed(habitId, dayPerformed)
@@ -259,7 +250,6 @@ export const habits = {
         )
     },
     deleteHabit ({ dispatch, commit }, { habitId }) {
-      console.log('action delete habit')
       // commit('deleteHabit', {habitId: habitId})
 
       return habitService.delete(habitId)
