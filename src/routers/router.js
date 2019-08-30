@@ -12,16 +12,29 @@ const globalMiddleware = [log, auth]
 
 const routerPaths = {
   Login: 'Login',
-  Habits: 'Habits'
+  Habit: 'Habit',
+  Habits: 'Habits',
+  Home: 'Home',
+  TodaysHabits: 'TodaysHabits',
+  ArchivedHabitList: 'ArchivedHabitList',
+  About: 'About',
+  UserHome: 'UserHome',
+  NotFound404: 'NotFound404',
+  UserSettings: 'UserSettings'
+}
+// an object used to redirect to habits. Based on the presumption that users want to spend most of their time there.
+const redirectRouteToHabits = {
+  Login: 'Login',
+  Home: 'Home'
 }
 
 const authCheck = (to, from, next) => {
-  console.log('authCheck')
   if (!store.getters.isloggedin) {
     if (localStorage.getItem('jwt')) {
       store.commit('jwtActive')
       store.commit('setCurrentuserId')
-      if (to.name === routerPaths.Login) {
+
+      if (to.name in redirectRouteToHabits) {
         next('/habits')
       }
     };
@@ -30,18 +43,6 @@ const authCheck = (to, from, next) => {
   }
   next('/login')
 }
-
-// const ifAuthenticated = (to, from, next) => {
-//   console.log('ifAuthenticated');
-//   if (localStorage.getItem('jwt') && localStorage.getItem('jwt')) {
-//     console.log(this.$route);
-//     store.commit('jwtActive');
-//     store.commit('setCurrentuserId');
-//     next('/HabitList')
-//     return
-//   }
-//   next('/login')
-// }
 
 Vue.use(Router)
 
@@ -69,7 +70,7 @@ const router = new Router({
     },
     {
       path: '/habit/:id',
-      name: routerPaths.Habits,
+      name: routerPaths.Habit,
       component: () => import(/* webpackChunkName: "about" */ '@/views/habit/habit.vue'),
       beforeEnter: authCheck,
       meta: {
@@ -78,7 +79,7 @@ const router = new Router({
     },
     {
       path: '/habits',
-      name: 'Habits',
+      name: routerPaths.Habits,
       component: () => import(/* webpackChunkName: "about" */ '@/views/habit/HabitList.vue'),
       beforeEnter: authCheck,
       meta: {
@@ -87,7 +88,7 @@ const router = new Router({
     },
     {
       path: '/todayshabits',
-      name: 'TodaysHabits',
+      name: routerPaths.TodaysHabits,
       component: () => import(/* webpackChunkName: "about" */ '@/views/habit/TodaysHabits.vue'),
       beforeEnter: authCheck,
       meta: {
@@ -96,7 +97,7 @@ const router = new Router({
     },
     {
       path: '/archivedhabits',
-      name: 'ArchivedHabitList',
+      name: routerPaths.ArchivedHabitList,
       component: () => import(/* webpackChunkName: "about" */ '@/views/habit/ArchivedHabitList.vue'),
       beforeEnter: authCheck,
       meta: {
@@ -105,7 +106,7 @@ const router = new Router({
     },
     {
       path: '/about',
-      name: 'about',
+      name: routerPaths.about,
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
@@ -113,7 +114,7 @@ const router = new Router({
     },
     {
       path: '/user/home',
-      name: 'Start',
+      name: routerPaths.UserHome,
       component: () => import(/* webpackChunkName: "about" */ '@/views/user/home.vue'),
       beforeEnter: authCheck,
       meta: {
@@ -121,8 +122,16 @@ const router = new Router({
       }
     },
     {
+      path: '/404',
+      name: routerPaths.NotFound404,
+      component: () => import(/* webpackChunkName: "about" */ '@/views/oAccess/404.vue'),
+      meta: {
+        middleware: globalMiddleware
+      }
+    },
+    {
       path: '/user/settings',
-      name: 'UserSettings',
+      name: routerPaths.UserSettings,
       component: () => import(/* webpackChunkName: "about" */ '@/views/user/settings.vue'),
       beforeEnter: authCheck,
       meta: {
@@ -176,6 +185,14 @@ function nextFactory (context, middleware, index) {
 }
 
 router.beforeEach((to, from, next) => {
+  if (!(to.name in routerPaths)) {
+    console.log('Route Not found')
+
+    console.log({ to: to, from: from, next: next })
+
+    console.log(routerPaths.NotFound404)
+    next({ path: '/404' })
+  }
   if (to.meta.middleware) {
     const middleware = Array.isArray(to.meta.middleware)
       ? to.meta.middleware
