@@ -20,7 +20,7 @@ steps:
     npm run build
   displayName: 'npm install and build'
   env:
-    NODE_ENV: staging
+    NODE_ENV: production
 
 - task: ArchiveFiles@2
   displayName: Archive
