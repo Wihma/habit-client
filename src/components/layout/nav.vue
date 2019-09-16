@@ -1,79 +1,56 @@
 <template>
-  <v-navigation-drawer
-        v-if="isLoggedIn"
-        clipped
-        permanent
-        :mini-variant.sync="mini"
-        v-model="drawer"
-        hide-overlay
-        stateless
-        style="position: fixed; top: 64px"
-      >
-        <v-toolbar flat class="transparent">
-          <v-list class="pa-0">
-            <v-list-tile>
+  <div>
+    <v-app-bar dark>
+      <v-app-bar-nav-icon v-if="showLogInButton" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
-              <v-list-tile-avatar>
-                <!-- <img src="https://randomuser.me/api/portraits/men/85.jpg"> -->
-                <v-icon
-                  style="cursor: pointer"
-                  >
-                  menu
-                </v-icon>
-              </v-list-tile-avatar>
+      <v-toolbar-title class="headline text-uppercase">
+        <span>Vänliga</span>
+        <span class="font-weight-light">Vanor</span>
+      </v-toolbar-title>
 
-              <v-list-tile-content>
-                <v-list-tile-title>Menu</v-list-tile-title>
-              </v-list-tile-content>
+      <div class="flex-grow-1"></div>
 
-              <v-list-tile-action>
-                <v-btn
-                  icon
-                  @click.stop="mini = !mini"
-                >
-                  <v-icon>chevron_left</v-icon>
-                </v-btn>
-              </v-list-tile-action>
-            </v-list-tile>
-          </v-list>
-        </v-toolbar>
+      <v-btn v-if="!showLogInButton" @click="login" light>
+        <span>Login</span>
+      </v-btn>
 
-        <v-list class="pt-0" dense>
-          <v-divider></v-divider>
-
-          <v-list-tile
-            v-for="item in items"
-            :key="item.title"
-          >
-            <v-list-tile-action>
-              <v-btn
-                flat
-                icon
-                :to="item.route"
-              >
-                <v-icon
-                  style="cursor: pointer"
-                >{{ item.icon }}
-              </v-icon>
-              </v-btn>
-            </v-list-tile-action>
-
-            <v-list-tile-content>
-              <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list>
-      </v-navigation-drawer>
+      <user-icon-popup v-if="showLogInButton" username="Marc Wihlstrand"></user-icon-popup>
+    </v-app-bar>
+    <v-navigation-drawer
+      v-if="drawer"
+      v-model="drawer"
+      absolute
+      v-bind:bottom="isMobile"
+      temporary
+    >
+      <v-list nav dense>
+        <v-list-item-group>
+          <v-list-item v-for="item in items" :key="item.title" dense nav @click="navigateTo(item)">
+            <v-list-item-action>
+              <v-icon style="cursor: pointer">{{ item.icon }}</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-navigation-drawer>
+  </div>
 </template>
 
 <script>
-
 // const router = require('@/routers/router');
+import UserIconPopup from '@/components/user/userIconPopup'
 
 export default {
+  components: {
+    'user-icon-popup': UserIconPopup
+  },
   data () {
     return {
       drawer: true,
+      group: null,
       items: [
         // { title: 'Home', icon: 'dashboard', route: router.routes.find((route) => {return route.name === 'Home' }).path },
         { title: 'Habit List', icon: 'question_answer', route: '/habits' },
@@ -86,14 +63,44 @@ export default {
       right: null
     }
   },
+  methods: {
+    login () {
+      this.$router.push('/login')
+    },
+    logout () {
+      this.$store.dispatch('logout')
+      this.$router.push('/login')
+    },
+    menu () {
+      return this.$store.getters.userIconMenuVisibility
+    },
+    navigateTo (navItem) {
+      this.$router.push(navItem.route)
+    }
+  },
   computed: {
-    isLoggedIn () {
-      return this.$store.getters.isLoggedIn
+    showLogInButton () {
+      if (this.$route.name !== 'Login') {
+        return this.$store.getters.isLoggedIn
+      } else {
+        return true
+      }
+    },
+    isMobile () {
+      console.log({ isMobile: this.$store.getters.isMobile })
+      return this.$store.getters.isMobile
+    }
+  },
+  watch: {
+    group () {
+      this.drawer = true
+    },
+    $route (to, from) {
+      this.show = false
     }
   },
   mounted () {
     // check if current route is logged
   }
 }
-
 </script>

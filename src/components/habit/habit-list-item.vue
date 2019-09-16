@@ -1,31 +1,29 @@
 <template>
   <v-card
-    style="min-width: 480px; max-width: 600px">
-      <v-card-title primary-title>
-        <div>
-          <div class="headline">{{ habit.name }}</div>
-        </div>
-      </v-card-title>
+    class="listCard"
+  >
+    <v-card-title primary-title>
+      <div>
+        <div class="headline">{{ habit.name }}</div>
+      </div>
+    </v-card-title>
 
-      <v-card-actions>
-        <v-btn @click="goToHabit(habit._id)" dark color="purple">Edit</v-btn>
-        <v-btn dark color="teal accent-3">Statistics</v-btn>
-        <v-spacer></v-spacer>
-        <v-btn icon @click="show = !show">
-          <v-icon>{{ show ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
-        </v-btn>
-      </v-card-actions>
+    <v-card-actions>
+      <v-btn @click="goToHabit(habit._id)" dark color="purple">Edit</v-btn>
+      <v-btn dark color="teal accent-3">Statistics</v-btn>
+      <v-spacer></v-spacer>
+      <v-btn icon @click="show = !show">
+        <v-icon>{{ show ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
+      </v-btn>
+    </v-card-actions>
 
-      <v-slide-y-transition>
-        <v-card-text v-show="show">
-          {{ habit.description }}
-        </v-card-text>
-      </v-slide-y-transition>
+    <v-slide-y-transition>
+      <v-card-text v-show="show">{{ habit.description }}</v-card-text>
+    </v-slide-y-transition>
   </v-card>
 </template>
 
 <script>
-
 export default {
   props: {
     habit: {
@@ -35,16 +33,27 @@ export default {
   data: () => ({
     show: false
   }),
-  computed: {
-
-  },
+  computed: {},
   methods: {
     goToHabit (_id) {
       this.$router.push('habit/' + _id)
     }
   },
-  mounted () {
+  mounted () {}
+}
+</script>
+
+<style scoped>
+@media (max-width : 320px) {
+  .listCard {
 
   }
 }
-</script>
+
+@media (min-width : 1280px) {
+  .listCard {
+    max-width: 700px
+  }
+}
+
+</style>

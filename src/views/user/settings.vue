@@ -6,10 +6,10 @@
           <v-card
           style="min-width: 480px; max-width: 480px"
           class="elevation-12">
-            <v-toolbar dark color="green">
+            <v-app-bar dark color="green">
               <v-card-title>User Settings</v-card-title>
               <v-spacer></v-spacer>
-            </v-toolbar>
+            </v-app-bar>
 
             <v-card-text>
               <v-form
