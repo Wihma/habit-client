@@ -1,62 +1,41 @@
 <template>
   <v-content>
-    <v-container fluid fill-height>
-      <v-layout align-center justify-center>
-        <v-flex xs12 sm8 md4>
-          <v-card
-          style="min-width: 480px; max-width: 480px"
-          class="elevation-12">
-            <v-toolbar dark color="green">
-              <v-toolbar-title>Login</v-toolbar-title>
-              <v-spacer></v-spacer>
-            </v-toolbar>
-            <v-card-text>
-              <v-form
-                ref="form"
-                v-model="valid"
-                lazy-validation
-              >
-                <v-text-field
-                  v-model="email"
-                  :rules="emailRules"
-                  required
+    <v-container>
+      <v-layout align-center justify-center fill-height>
+        <v-card class="mx-auto">
+          <v-card-title>Login</v-card-title>
+          <div class="pa-2">
+            <v-form
+              ref="form"
+              v-model="valid"
+              lazy-validation
+              style="min-width: 300px; max-width: 480px; min-height: 200px"
+            >
+              <v-text-field
+                v-model="email"
+                :rules="emailRules"
+                required
+                prepend-icon="email"
+                name="email"
+                label="Email"
+                type="text"
+              ></v-text-field>
+              <v-text-field
+                v-model="password"
+                :rules="passwordRules"
+                required
+                id="password"
+                prepend-icon="lock"
+                name="password"
+                label="Password"
+                type="password"
+              ></v-text-field>
+              <v-alert v-model="loginFailed.status" type="error" dismissible>{{loginFailed.text}}</v-alert>
 
-                  prepend-icon="email"
-                  name="email"
-                  label="Email"
-                  type="text">
-                </v-text-field>
-                <v-text-field
-                  v-model="password"
-                  :rules="passwordRules"
-                  required
-
-                  id="password"
-                  prepend-icon="lock"
-                  name="password"
-                  label="Password"
-                  type="password">
-                </v-text-field>
-                <v-alert
-                  v-model="loginFailed.status"
-                  type="error"
-                  dismissible
-                  >
-                  {{loginFailed.text}}
-                </v-alert>
-              </v-form>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn
-                color="green"
-                dark
-                @click="login">
-                Login
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-flex>
+              <v-btn color="green" absolute right dark @click="login">Login</v-btn>
+            </v-form>
+          </div>
+        </v-card>
       </v-layout>
     </v-container>
   </v-content>
@@ -66,6 +45,16 @@
 // import AuthService from '@/services/Auth'
 export default {
   data: () => ({
+    name: '',
+    nameRules: [
+      v => !!v || 'Name is required',
+      v => (v && v.length <= 10) || 'Name must be less than 10 characters'
+    ],
+
+    select: null,
+    items: ['Item 1', 'Item 2', 'Item 3', 'Item 4'],
+    checkbox: false,
+
     valid: true,
     submitted: false,
     loginFailed: {
@@ -89,6 +78,17 @@ export default {
     }
   },
   methods: {
+    validate () {
+      if (this.$refs.form.validate()) {
+        this.snackbar = true
+      }
+    },
+    reset () {
+      this.$refs.form.reset()
+    },
+    resetValidation () {
+      this.$refs.form.resetValidation()
+    },
     validateForm () {
       return this.$refs.form.validate()
     },
@@ -98,21 +98,24 @@ export default {
       }
 
       this.submitted = true
-      this.$store.dispatch('login', {
-        email: this.email,
-        password: this.password
-      }).then(
-        (res) => {
-          this.$router.push('/habits')
-        },
-        (err) => {
-          console.error({ text: 'failed to log in', err: err })
-          this.loginFailed.status = true
-          this.loginFailed.text = 'Failed to login'
-        }
-      ).catch(() => {
-        alert('rejected')
-      })
+      this.$store
+        .dispatch('login', {
+          email: this.email,
+          password: this.password
+        })
+        .then(
+          res => {
+            this.$router.push('/habits')
+          },
+          err => {
+            console.error({ text: 'failed to log in', err: err })
+            this.loginFailed.status = true
+            this.loginFailed.text = 'Failed to login'
+          }
+        )
+        .catch(() => {
+          alert('rejected')
+        })
     }
   },
   mounted () {

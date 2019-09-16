@@ -51,6 +51,8 @@ export const auth = {
               localStorage.setItem('jwt', res.token)
               localStorage.setItem('userId', res.userId)
 
+              dispatch('checkIfMobile')
+
               resolve(res)
             },
             (err) => {

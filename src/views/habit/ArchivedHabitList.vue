@@ -3,7 +3,7 @@
       <v-container fluid fill-height>
         <v-layout justify-center>
           <v-flex xs12 sm8 md4>
-            <v-toolbar
+            <v-app-bar
               dense
               floating
               flat
@@ -21,7 +21,7 @@
               <v-btn icon>
                 <v-icon>search</v-icon>
               </v-btn>
-            </v-toolbar>
+            </v-app-bar>
             <div v-for="habit in habits" :key="habit.key">
               <habit-list-item :habit="habit" v-if="habit.visible"></habit-list-item>
               <v-divider v-if="habit.visible" class="mb-3"></v-divider>

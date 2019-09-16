@@ -22,7 +22,6 @@ export default new Vuex.Store({
   modules: {
     auth,
     habits,
-    // ,layout
     layout
   },
   state: {
