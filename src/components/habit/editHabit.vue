@@ -15,6 +15,7 @@
               v-if="!isNewHabit"
               class="display-1 font-weight-bold">
               Edit Habit
+              {{habit._id}}
             </v-card-title>
             <v-card-text>
               <v-form
@@ -119,7 +120,7 @@
               <v-spacer></v-spacer>
               <v-btn
                 icon
-                @click="deleteHabit"
+                @click="deleteHabit(habit._id)"
                  >
                 <v-icon
 
@@ -216,14 +217,21 @@ export default {
           })
       }
     },
-    deleteHabit () {
-      // console.log('dispatching delete habit')
-      if (confirm('Are you sure?')) {
-        this.$store.dispatch('deleteHabit', { habitId: this.habit._id })
-          .then(() => {
-            this.$router.push('/habits')
-          })
-      }
+    deleteHabit (_id) {
+      // if (confirm('Are you sure?')) {
+      this.$store.dispatch('deleteHabit', { _id })
+        .then(() => {
+          this.$router.push('/habits')
+        })
+      // }
+    }
+  },
+  beforeMount () {
+    // check if habit exists
+    let habit = this.$store.getters.getHabitById(this.$route.params.id)
+    console.log({ message: 'getting habit', value: habit })
+    if (!habit) {
+      this.$router.push('/habits')
     }
   },
   created () {

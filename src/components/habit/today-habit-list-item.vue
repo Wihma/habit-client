@@ -1,6 +1,6 @@
 <template>
   <v-card
-    v-if="habit.visible"
+    class="mb-3"
   >
       <v-card-title primary-title>
         <div>
@@ -89,6 +89,8 @@ export default {
         this.display.addUnit = false
         this.habit.visible = false
 
+        this.$emit('completedHabit', this.habit._id)
+
         this.$store.dispatch('saveTodayPerformed', {
           habitId: this.habit._id,
           dayPerformed: {
@@ -98,7 +100,7 @@ export default {
           }
         }).then(
           () => {
-            console.log('success?')
+
           }
         ).catch(
           (err) => console.error(err)

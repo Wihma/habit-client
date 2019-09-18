@@ -111,8 +111,6 @@ export const habits = {
       //  check if any habitperf with current date and include that habit in todays habit
       // finish by sort
 
-      // debugger // eslint-disable-line
-
       let d = new Date()
       let n = d.getDay()
 
@@ -249,12 +247,10 @@ export const habits = {
           commit('saveTodayPerformed', { habitId: habitId, dayPerformed: dayPerformed })
         )
     },
-    deleteHabit ({ dispatch, commit }, { habitId }) {
-      // commit('deleteHabit', {habitId: habitId})
-
-      return habitService.delete(habitId)
+    deleteHabit ({ dispatch, commit }, { _id }) {
+      return habitService.delete(_id)
         .then(
-          commit('deleteHabit', { habitId: habitId })
+          commit('deleteHabit', { _id })
         )
     }
   }
