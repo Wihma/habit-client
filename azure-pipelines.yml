@@ -20,7 +20,8 @@ steps:
     npm run build
   displayName: 'npm install and build'
   env:
-    VUE_APP_API_DOMAIN:vanligavanor.se
+    NODE_ENV: staging
+    VUE_APP_API_DOMAIN: vanligavanor.se
 #no port specifiec in prod
     VUE_APP_API_PORT:
 
