@@ -37,7 +37,9 @@ export default {
       this.$router.push('habit/' + _id)
     }
   },
-  mounted () {}
+  mounted () {
+
+  }
 }
 </script>
 

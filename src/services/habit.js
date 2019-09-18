@@ -36,8 +36,9 @@ export const habitService = {
         return habit
       })
   },
-  delete (habitId) {
-    return Api().delete('habit/delete', { data: { id: habitId } })
+  delete (_id) {
+    console.log('delete habitid: ' + _id)
+    return Api().delete('habit/delete', { params: { _id: _id } })
       .then(handleResponse)
       .then((res) => {
         return null

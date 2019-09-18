@@ -111,8 +111,6 @@ export const habits = {
       //  check if any habitperf with current date and include that habit in todays habit
       // finish by sort
 
-      // debugger // eslint-disable-line
-
       let d = new Date()
       let n = d.getDay()
 
@@ -131,29 +129,29 @@ export const habits = {
 
       todaysHabits = todaysHabits.filter(habit => habit.active === true)
 
-      // todaysHabits = todaysHabits.filter((habit) => {
-      //     let today = new Date().setHours(0,0,0,0);
-      //     let daysPerformed = habit.daysPerformed.sort(function(a, b){
-      //       return a.time.start < b.time.start
-      //     });
-      //
-      //     var latestDay = null;
-      //     if(daysPerformed.lenght > 1 && daysPerformed !== undefined) {
-      //       latestDay = daysPerformed[daysPerformed.lenght-1];
-      //     } else {
-      //       latestDay = daysPerformed[0];
-      //     }
-      //     if(Boolean(latestDay)){
-      //       if(new Date(latestDay.time.start).setHours(0,0,0,0) === today) {
-      //         return false
-      //       } else {
-      //         return true
-      //       }
-      //     } else {
-      //       // if empty return true
-      //       return true
-      //     }
-      // })
+      todaysHabits = todaysHabits.filter((habit) => {
+        let today = new Date().setHours(0, 0, 0, 0)
+        let daysPerformed = habit.daysPerformed.sort(function (a, b) {
+          return a.time.start < b.time.start
+        })
+
+        var latestDay = null
+        if (daysPerformed.lenght > 1 && daysPerformed !== undefined) {
+          latestDay = daysPerformed[daysPerformed.lenght - 1]
+        } else {
+          latestDay = daysPerformed[0]
+        }
+        if (latestDay) {
+          if (new Date(latestDay.time.start).setHours(0, 0, 0, 0) === today) {
+            return false
+          } else {
+            return true
+          }
+        } else {
+          // if empty return true
+          return true
+        }
+      })
       todaysHabits.sort(function (a, b) {
         return a.time > b.time
       })
@@ -249,12 +247,10 @@ export const habits = {
           commit('saveTodayPerformed', { habitId: habitId, dayPerformed: dayPerformed })
         )
     },
-    deleteHabit ({ dispatch, commit }, { habitId }) {
-      // commit('deleteHabit', {habitId: habitId})
-
-      return habitService.delete(habitId)
+    deleteHabit ({ dispatch, commit }, { _id }) {
+      return habitService.delete(_id)
         .then(
-          commit('deleteHabit', { habitId: habitId })
+          commit('deleteHabit', { _id })
         )
     }
   }

@@ -12,7 +12,8 @@
             <v-col cols="10">
               <v-app-bar
                 xs12 sm8 md4
-              dense floating flat class="searchBar" justify-center>
+                dense floating flat class="searchBar"
+                justify-center>
                 <v-text-field
                   v-model.lazy="search.text"
                   hide-details
@@ -30,7 +31,7 @@
 
           </v-row>
           <v-spacer></v-spacer>
-          <div class="pa-5"></div>
+          <div class="pa-2"></div>
           <v-col cols="12">
           <div v-for="habit in habits" :key="habit._id" >
             <habit-list-item :habit="habit" v-if="habit.visible"></habit-list-item>

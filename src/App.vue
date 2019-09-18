@@ -10,8 +10,10 @@
 
 <script>
 
+// declare bus for simple component communication
 // import toolbar from '@/components/layout/toolbar'
 import navigation from '@/components/layout/nav'
+
 export default {
   name: 'App',
   components: {

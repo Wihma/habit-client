@@ -151,18 +151,11 @@ export default {
       this.$store.dispatch('logout')
       this.$router.push('/login')
     }
-    // closeUserIconMenu () {
-    //   console.log('closing menu')
-    //   this.$store.dispatch('userIconMenuVisibilityFalse')
-    // }
   },
   computed: {
     isLoggedIn () {
       return this.$store.getters.isLoggedIn
     }
-    // menu () {
-    //   return this.$store.getters.userIconMenuVisibility
-    // }
   }
 }
 </script>

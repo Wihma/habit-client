@@ -24,11 +24,7 @@ function handleResponse (res) {
   }
   if (!(response.status === 200 && response.statusText === 'OK')) {
     if (response.status === 401) {
-      // auto logout if 401 response returned from api
 
-      // logout();
-      // console.log({message: 'auth failed', location: location});
-      //        location.reload(true);
     }
     const error = (data && data.message) || response.statusText
     return Promise.reject(error)
