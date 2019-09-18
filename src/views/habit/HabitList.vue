@@ -3,34 +3,40 @@
     <v-container fluid fill-height>
       <v-layout justify-center>
         <v-flex xs12 sm8 md4>
-          <v-flex xs12 sm8 md4>
-          <v-app-bar
-              dense
-              floating
-              flat
-              class="searchBar"
-              justify-center
-            >
-              <v-text-field
-                v-model.lazy="search.text"
-                hide-details
-                single-line
-                autofocus
-                right
-                class="searchInput"
-                solo
-              ></v-text-field>
-              <v-btn icon >
-                <v-icon size="40">search</v-icon>
-              </v-btn>
-          </v-app-bar>
-          </v-flex>
+          <v-row>
+            <v-col
+              class="test"
+              v-if="!isMobile"
+              cols="2">
+            </v-col >
+            <v-col cols="10">
+              <v-app-bar
+                xs12 sm8 md4
+              dense floating flat class="searchBar" justify-center>
+                <v-text-field
+                  v-model.lazy="search.text"
+                  hide-details
+                  single-line
+                  autofocus
+                  right
+                  class="searchInput"
+                  solo
+                ></v-text-field>
+                <v-btn icon>
+                  <v-icon size="40">search</v-icon>
+                </v-btn>
+              </v-app-bar>
+            </v-col>
+
+          </v-row>
           <v-spacer></v-spacer>
           <div class="pa-5"></div>
-          <div v-for="habit in habits" :key="habit._id">
+          <v-col cols="12">
+          <div v-for="habit in habits" :key="habit._id" >
             <habit-list-item :habit="habit" v-if="habit.visible"></habit-list-item>
             <v-divider v-if="habit.visible" class="mb-3"></v-divider>
           </div>
+          </v-col>
         </v-flex>
       </v-layout>
     </v-container>
@@ -66,6 +72,9 @@ export default {
         return []
       }
       // let tempHabits = this.$store.getters.getAllHabitsForUser;
+    },
+    isMobile () {
+      return this.$store.getters.isMobile
     }
   },
   methods: {
@@ -102,18 +111,18 @@ export default {
   bottom: 10px;
   right: 10px;
 }
-@media (max-width: 360px){
+@media (max-width: 360px) {
   .searchBar {
-    width: 340px
+    width: 340px;
   }
   .searchInput {
     max-width: 280px;
     min-width: 260px;
   }
 }
-@media (min-width: 1280px){
-.searchBar {
-    width: 340px
+@media (min-width: 1280px) {
+  .searchBar {
+    width: 340px;
   }
   .searchInput {
     min-width: 400px;

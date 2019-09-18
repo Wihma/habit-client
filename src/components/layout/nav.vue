@@ -87,7 +87,6 @@ export default {
       }
     },
     isMobile () {
-      console.log({ isMobile: this.$store.getters.isMobile })
       return this.$store.getters.isMobile
     }
   },

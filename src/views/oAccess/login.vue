@@ -100,7 +100,7 @@ export default {
       this.submitted = true
       this.$store
         .dispatch('login', {
-          email: this.email,
+          email: this.email.toLowerCase(),
           password: this.password
         })
         .then(
