@@ -1,7 +1,5 @@
 <template>
-  <v-card
-    class="listCard"
-  >
+  <v-card class="listCard">
     <v-card-title primary-title>
       <div>
         <div class="headline">{{ habit.name }}</div>
@@ -44,16 +42,5 @@ export default {
 </script>
 
 <style scoped>
-@media (max-width : 320px) {
-  .listCard {
-
-  }
-}
-
-@media (min-width : 1280px) {
-  .listCard {
-    max-width: 700px
-  }
-}
 
 </style>

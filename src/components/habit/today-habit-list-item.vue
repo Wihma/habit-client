@@ -1,7 +1,7 @@
 <template>
   <v-card
     v-if="habit.visible"
-    style="min-width: 480px; max-width: 600px">
+  >
       <v-card-title primary-title>
         <div>
           <div class="headline">
