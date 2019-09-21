@@ -3,7 +3,6 @@
     <v-card-title primary-title>
       <div>
         <div class="headline">{{ habit.name }}</div>
-        <div class="headline">{{ habit._id }}</div>
       </div>
     </v-card-title>
 
