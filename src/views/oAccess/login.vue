@@ -116,6 +116,13 @@ export default {
         that.validateForm()
       }
     })
+  },
+  created () {
+    console.log(`${process.env.VUE_APP_API_PROTOCOL}${process.env.VUE_APP_API_DOMAIN}${process.env.VUE_APP_API_PORT}/api/`)
+    const loggedIn = localStorage.getItem('userjwt')
+    if (loggedIn !== null && loggedIn !== null && loggedIn.length > 10) {
+      // this.$router.push('habitList');
+    }
   }
 }
 </script>
