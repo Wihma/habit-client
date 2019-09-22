@@ -48,6 +48,7 @@ export const auth = {
             (res) => {
               commit('loginSuccess')
               commit('setCurrentuserId', res.userId)
+
               localStorage.setItem('jwt', res.token)
               localStorage.setItem('userId', res.userId)
 

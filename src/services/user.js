@@ -3,7 +3,7 @@ import Api from '@/services/Api'
 export const userService = {
   login (email, password) {
     return Api().post('user/login', { email: email, password: password })
-      .then(handleResponse, handleResponse)
+      .then(handleResponse)
 
       .catch((err) => {
         // return {status: 401, message: 'login failed'}

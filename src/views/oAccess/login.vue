@@ -6,9 +6,9 @@
           <v-card-title>Login</v-card-title>
           <div class="pa-2">
             <v-form
-              ref="form"
+              ref="loginForm"
               v-model="valid"
-              lazy-validation
+
               style="min-width: 300px; max-width: 480px; min-height: 200px"
             >
               <v-text-field
@@ -78,16 +78,12 @@ export default {
     }
   },
   methods: {
-    resetValidation () {
-      this.$refs.form.resetValidation()
-    },
-    validateForm () {
-      return this.$refs.form.validate()
+    validateForm: function () {
+      if (this.$refs.loginForm) {
+        return this.$refs.loginForm.validate()
+      }
     },
     login () {
-      if (!this.validateForm()) {
-        return
-      }
       this.submitted = true
       this.$store
         .dispatch('login', {

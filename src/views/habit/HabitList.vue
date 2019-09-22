@@ -4,16 +4,9 @@
       <v-layout justify-center>
         <v-flex xs12 sm8 md4>
           <v-row>
-            <v-col
-              class="test"
-              v-if="!isMobile"
-              cols="2">
-            </v-col >
+            <v-col class="test" v-if="!isMobile" cols="2"></v-col>
             <v-col cols="10">
-              <v-app-bar
-                xs12 sm8 md4
-                dense floating flat class="searchBar"
-                justify-center>
+              <v-app-bar xs12 sm8 md4 dense floating flat class="searchBar" justify-center>
                 <v-text-field
                   v-model.lazy="search.text"
                   hide-details
@@ -28,15 +21,14 @@
                 </v-btn>
               </v-app-bar>
             </v-col>
-
           </v-row>
           <v-spacer></v-spacer>
           <div class="pa-2"></div>
           <v-col cols="12">
-          <div v-for="habit in habits" :key="habit._id" >
-            <habit-list-item :habit="habit" v-if="habit.visible"></habit-list-item>
-            <v-divider v-if="habit.visible" class="mb-3"></v-divider>
-          </div>
+            <div v-for="habit in habits" :key="habit._id">
+              <habit-list-item   :habit="habit"></habit-list-item>
+              <v-divider v-if="habit.visible" class="mb-3"></v-divider>
+            </div>
           </v-col>
         </v-flex>
       </v-layout>
@@ -62,17 +54,18 @@ export default {
     habits () {
       // make sure all habits are visible when retrieved from the store
       let tempHabits = this.$store.getters.allUserHabits
-      if (tempHabits !== undefined) {
+      if (tempHabits.length > 0) {
         tempHabits.forEach(habit => {
           habit.visible = true
           habit.show = false
         })
-
         return tempHabits
       } else {
         return []
       }
-      // let tempHabits = this.$store.getters.getAllHabitsForUser;
+    },
+    habitsExist () {
+      return this.$store.getters.habitsExist
     },
     isMobile () {
       return this.$store.getters.isMobile

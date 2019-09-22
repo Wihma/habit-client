@@ -3,12 +3,12 @@
       <v-container fluid fill-height>
         <v-layout justify-center>
           <v-flex xs12 sm8 md4>
-              <habit-list-item
+              <today-habit-list-item
                 v-for="(habit, index) in this.todayHabits"
                 :key="habit._id"
                 :habit="habit"
                 @completedHabit="completedHabit(index)"
-              ></habit-list-item>
+              ></today-habit-list-item>
           </v-flex>
         </v-layout>
       </v-container>
@@ -28,11 +28,11 @@
 </template>
 <script>
 
-import HabitListItem from '@/components/habit/today-habit-list-item'
+import TodayHabitListItem from '@/components/habit/today-habit-list-item'
 
 export default {
   components: {
-    'habit-list-item': HabitListItem
+    'today-habit-list-item': TodayHabitListItem
   },
   data: () => ({
     todayHabits: '',

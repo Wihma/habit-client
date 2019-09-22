@@ -5,7 +5,7 @@ import VuexPersist from 'vuex-persist'
 import { auth } from './auth'
 import { habits } from './habits'
 import { layout } from './layout'
-// import { layout } from './layout'
+import { user } from './user'
 
 Vue.use(Vuex)
 
@@ -22,7 +22,8 @@ export default new Vuex.Store({
   modules: {
     auth,
     habits,
-    layout
+    layout,
+    user
   },
   state: {
 

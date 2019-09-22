@@ -10,7 +10,10 @@ export const habitService = {
   },
   getAllHabitsForUser (userId) {
     return Api().get('habit/getAllHabitsForUser', { params: { userId: userId } })
-      .then(handleResponse)
+      .then(
+        res => handleResponse(res)
+        , err => handleError(err)
+      )
       .then((habits) => {
         return habits
       })
@@ -51,11 +54,23 @@ function handleResponse (response) {
   if (!(response.status === 200 && response.statusText === 'OK')) {
     if (response.status === 401) {
       // auto logout if 401 response returned from api
-      // logout();
+      console.log('should log out')
+      this.$store.dispatch('logout')
       location.reload(true)
     }
     const error = (data && data.message) || response.statusText
     return Promise.reject(error)
   }
   return data
+}
+
+function handleError (error) {
+  if (error.hasOwnProperty('response')) {
+    if (error.response.hasOwnProperty('status')) {
+      if (error.response.status === 401) {
+        // this.$store.dispatch('logout')
+        // this.$router.push('/logout')
+      }
+    }
+  }
 }

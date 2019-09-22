@@ -74,6 +74,15 @@ export const habits = {
     allUserHabits: (state) => {
       if (Object.keys(state.habits).length > 0) {
         return state.habits.filter(habit => habit.active === true)
+      } else {
+        return []
+      }
+    },
+    habitsExist: (state) => {
+      if (state.habits.lenght > 0) {
+        return true
+      } else {
+        return false
       }
     },
     allArchivedHabits: (state) => {

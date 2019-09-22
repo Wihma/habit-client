@@ -14,7 +14,10 @@
         <span>Login</span>
       </v-btn>
 
-      <user-icon-popup v-if="showLogInButton" username="Marc Wihlstrand"></user-icon-popup>
+      <user-icon-popup
+        v-if="showLogInButton"
+        :username="userName"
+        ></user-icon-popup>
     </v-app-bar>
     <v-navigation-drawer
       v-if="drawer"
@@ -49,7 +52,7 @@ export default {
   },
   data () {
     return {
-      drawer: true,
+      drawer: false,
       group: null,
       items: [
         // { title: 'Home', icon: 'dashboard', route: router.routes.find((route) => {return route.name === 'Home' }).path },
@@ -68,14 +71,17 @@ export default {
       this.$router.push('/login')
     },
     logout () {
-      this.$store.dispatch('logout')
+      console.log(this.$router)
       this.$router.push('/login')
+      // this.$store.dispatch('logout')
     },
     menu () {
       return this.$store.getters.userIconMenuVisibility
     },
     navigateTo (navItem) {
-      this.$router.push(navItem.route)
+      if (navItem.route !== this.$route.path) {
+        this.$router.push(navItem.route)
+      }
     }
   },
   computed: {
@@ -84,6 +90,9 @@ export default {
     },
     isMobile () {
       return this.$store.getters.isMobile
+    },
+    userName () {
+      return this.$store.getters.getUsername
     }
   },
   watch: {
