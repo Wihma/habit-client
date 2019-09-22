@@ -78,14 +78,6 @@ export default {
     }
   },
   methods: {
-    validate () {
-      if (this.$refs.form.validate()) {
-        this.snackbar = true
-      }
-    },
-    reset () {
-      this.$refs.form.reset()
-    },
     resetValidation () {
       this.$refs.form.resetValidation()
     },
@@ -96,7 +88,6 @@ export default {
       if (!this.validateForm()) {
         return
       }
-
       this.submitted = true
       this.$store
         .dispatch('login', {
@@ -125,13 +116,6 @@ export default {
         that.validateForm()
       }
     })
-  },
-  created () {
-    console.log(process.env.VUE_APP_API_DOMAIN)
-    const loggedIn = localStorage.getItem('userjwt')
-    if (loggedIn !== null && loggedIn !== null && loggedIn.length > 10) {
-      // this.$router.push('habitList');
-    }
   }
 }
 </script>

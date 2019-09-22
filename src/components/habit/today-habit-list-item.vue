@@ -23,8 +23,8 @@
 
       <v-card-actions>
         <v-btn @click="start" v-if="display.start" dark color="green">Start</v-btn>
-        <v-btn @click="finish" v-if="display.finish" dark outline color="black">Finish</v-btn>
-        <v-btn @click="complete" v-if="display.complete" dark outline color="black">Complete</v-btn>
+        <v-btn @click="finish" v-if="display.finish" dark outlined color="black">Finish</v-btn>
+        <v-btn @click="complete" v-if="display.complete" dark outlined color="black">Complete</v-btn>
 
       </v-card-actions>
   </v-card>
@@ -89,8 +89,6 @@ export default {
         this.display.addUnit = false
         this.habit.visible = false
 
-        this.$emit('completedHabit', this.habit._id)
-
         this.$store.dispatch('saveTodayPerformed', {
           habitId: this.habit._id,
           dayPerformed: {
@@ -100,7 +98,7 @@ export default {
           }
         }).then(
           () => {
-
+            this.$emit('completedHabit')
           }
         ).catch(
           (err) => console.error(err)

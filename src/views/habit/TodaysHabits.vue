@@ -3,15 +3,12 @@
       <v-container fluid fill-height>
         <v-layout justify-center>
           <v-flex xs12 sm8 md4>
-            <div
-              v-for="habit in this.habits"
-              :key="habit.key"
-            >
               <habit-list-item
+                v-for="(habit, index) in this.todayHabits"
+                :key="habit._id"
                 :habit="habit"
-                @completedHabit="completedHabit"
+                @completedHabit="completedHabit(index)"
               ></habit-list-item>
-            </div>
           </v-flex>
         </v-layout>
       </v-container>
@@ -39,7 +36,7 @@ export default {
   },
   data: () => ({
     // habits data stubs
-    habits: '',
+    todayHabits: '',
     search: {
       text: ''
     }
@@ -66,24 +63,38 @@ export default {
       // -1 equals new habit
       this.$router.push('habit/-1')
     },
-    completedHabit (habitId) {
-      this.habits.splice(this.habits.findIndex(h => {
-        return h._id === habitId
-      }, 1))
+    completedHabit (index) {
+      // console.log({ habitId: habitId })
+      // console.log(typeof this.todayHabits)
+      // console.log(this.todayHabits)
+
+      // let index = this.todayHabits.findIndex((h) => {
+      //   if (h._id === habitId) {
+      //     console.log(h.name)
+      //     return true
+      //   }
+      // })
+
+      this.todayHabits.splice(index, 1)
+
+      // console.log({ index: index, removed: this.todayHabits[index].name })
     }
   },
   watch: {
 
   },
   beforeMount () {
-    let habits = this.$store.getters.getTodaysHabits
-    if (habits !== undefined) {
-      habits.forEach((habit) => {
-        habits.visible = true
-        habits.show = false
+    let todayHabits = this.$store.getters.getTodaysHabits
+    if (todayHabits !== undefined) {
+      todayHabits.forEach((habit) => {
+        todayHabits.visible = true
+        todayHabits.show = false
       })
 
-      this.habits = habits
+      this.todayHabits = todayHabits
+      this.todayHabits.forEach(habit => {
+        console.log(JSON.stringify(habit))
+      })
     }
   },
   mounted () {

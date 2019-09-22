@@ -2,8 +2,11 @@
 module.exports = {
   // options...
   chainWebpack: config => {
-  config.module.rule('eslint').use('eslint-loader').options({
-    fix: true
-  })
-}
+    config.module.rule('eslint').use('eslint-loader').options({
+      fix: true
+    })
+  },
+  configureWebpack: {
+    devtool: 'source-map'
+  }
 }
