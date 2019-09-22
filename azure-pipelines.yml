@@ -22,8 +22,10 @@ steps:
   env:
     NODE_ENV: staging
     VUE_APP_API_DOMAIN: vanligavanor.se
-#no port specifiec in prod
+#no port specifiec in prod    
     VUE_APP_API_PORT:
+    VUE_APP_API_PROTOCOL: https://
+    
 
 - task: ArchiveFiles@2
   displayName: Archive

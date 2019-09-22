@@ -80,11 +80,7 @@ export default {
   },
   computed: {
     showLogInButton () {
-      if (this.$route.name !== 'Login') {
-        return this.$store.getters.isLoggedIn
-      } else {
-        return true
-      }
+      return this.$store.getters.isLoggedIn
     },
     isMobile () {
       return this.$store.getters.isMobile

@@ -35,28 +35,13 @@ export default {
     'habit-list-item': HabitListItem
   },
   data: () => ({
-    // habits data stubs
     todayHabits: '',
     search: {
       text: ''
     }
   }),
   computed: {
-    // habits () {
-    //   // make sure all habits are visible when retrieved from the store
-    //   let tempHabits = this.$store.getters.getTodaysHabits
-    //   if (tempHabits !== undefined) {
-    //     tempHabits.forEach((habit) => {
-    //       habit.visible = true
-    //       habit.show = false
-    //     })
 
-    //     return tempHabits
-    //   } else {
-    //     return []
-    //   }
-    //   // let tempHabits = this.$store.getters.getAllHabitsForUser;
-    // }
   },
   methods: {
     newHabit () {
@@ -64,20 +49,7 @@ export default {
       this.$router.push('habit/-1')
     },
     completedHabit (index) {
-      // console.log({ habitId: habitId })
-      // console.log(typeof this.todayHabits)
-      // console.log(this.todayHabits)
-
-      // let index = this.todayHabits.findIndex((h) => {
-      //   if (h._id === habitId) {
-      //     console.log(h.name)
-      //     return true
-      //   }
-      // })
-
       this.todayHabits.splice(index, 1)
-
-      // console.log({ index: index, removed: this.todayHabits[index].name })
     }
   },
   watch: {
@@ -92,9 +64,6 @@ export default {
       })
 
       this.todayHabits = todayHabits
-      this.todayHabits.forEach(habit => {
-        console.log(JSON.stringify(habit))
-      })
     }
   },
   mounted () {
