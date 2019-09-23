@@ -51,6 +51,8 @@ export const auth = {
 
               localStorage.setItem('jwt', res.token)
               localStorage.setItem('userId', res.userId)
+              console.log({ 'message': 'before settings username', username: res.username })
+              dispatch('setUsername', res.username)
 
               dispatch('checkIfMobile')
 

@@ -28,6 +28,9 @@ export const user = {
     }
   },
   actions: {
-
+    setUsername ({ dispatch, commit }, username) {
+      console.log({ 'message': 'settings username', username: username })
+      commit('setUsername', username)
+    }
   }
 }

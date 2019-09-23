@@ -34,6 +34,7 @@
                 <v-textarea
                   v-model="habit.description"
                   :rules="rules.description"
+                  placeholder="A description of your minimum goal"
 
                   name="description"
                   label="Description"
@@ -53,6 +54,14 @@
                       tooltip
                     ></v-checkbox>
                   </v-flex>
+                </v-layout>
+                <v-divider class="mb-5"></v-divider>
+                <v-layout>
+                  <v-row justify="space-around" align="center">
+                      <v-col style="width: 290px; flex: 0 1 auto;">
+                        <v-time-picker v-model="habit.time" format="24hr"></v-time-picker>
+                      </v-col>
+                  </v-row>
                 </v-layout>
               </v-form>
             </v-card-text>
@@ -83,12 +92,6 @@
                       label="Unit"
                       type="text"
                     ></v-text-field>
-                  </v-flex>
-                </v-layout>
-                <v-divider class="mb-5"></v-divider>
-                <v-layout>
-                  <v-flex >
-                    <v-time-picker v-model="habit.time" format="24hr"></v-time-picker>
                   </v-flex>
                 </v-layout>
                 <v-divider class="mb-3"></v-divider>
@@ -129,10 +132,10 @@
               </v-btn>
               <v-btn  @click="show = !show">
                 <span v-if="!show">
-                  More info
+                  More settings
                 </span>
                 <span v-if="show">
-                  Less info
+                  Fewer settings
                 </span>
                 <!-- <v-icon>{{ show ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</v-icon> -->
               </v-btn>

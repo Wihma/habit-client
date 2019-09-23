@@ -11,16 +11,46 @@ import auth from './middleware/global/auth'
 const globalMiddleware = [log, auth]
 
 const routerPaths = {
-  Login: 'Login',
-  Habit: 'Habit',
-  Habits: 'Habits',
-  Home: 'Home',
-  TodaysHabits: 'TodaysHabits',
-  ArchivedHabitList: 'ArchivedHabitList',
-  About: 'About',
-  UserHome: 'UserHome',
-  NotFound404: 'NotFound404',
-  UserSettings: 'UserSettings'
+  Login: {
+    name: 'Login',
+    title: 'Login'
+  },
+  Habit: {
+    name: 'Habit',
+    title: 'Habit'
+  },
+  Habits: {
+    name: 'Habits',
+    title: 'Habits'
+  },
+  Home: {
+    name: 'Home',
+    title: 'Home'
+  },
+  TodaysHabits: {
+    name: 'TodaysHabits',
+    title: 'Todays Habits'
+  },
+  ArchivedHabitList: {
+    name: 'ArchivedHabitList',
+    title: 'Archived Habits'
+  },
+  About: {
+    name: 'About',
+    title: 'About'
+  },
+  UserHome: {
+    name: 'UserHome',
+    title: 'User Home'
+  },
+  NotFound404: {
+    name: 'NotFound404',
+    title: 'Not Found 404'
+  },
+  UserSettings: {
+    name: 'UserSettings',
+    title: 'User Settings'
+  }
 }
 // an object used to redirect to habits. Based on the presumption that users want to spend most of their time there.
 const redirectRouteToHabits = {
@@ -61,52 +91,57 @@ const router = new Router({
     },
     {
       path: '/login',
-      name: routerPaths.Login,
+      name: routerPaths.Login.name,
       component: () => import(/* webpackChunkName: "about" */ '@/views/oAccess/login.vue'),
       beforeEnter: authCheck,
       meta: {
-        middleware: [log]
+        middleware: [log],
+        title: routerPaths.Login.title
       }
     },
     {
       path: '/habit/:id',
-      name: routerPaths.Habit,
+      name: routerPaths.Habit.name,
       component: () => import(/* webpackChunkName: "about" */ '@/views/habit/habit.vue'),
       beforeEnter: authCheck,
       meta: {
-        middleware: globalMiddleware
+        middleware: globalMiddleware,
+        title: routerPaths.Habit.title
       }
     },
     {
       path: '/habits',
-      name: routerPaths.Habits,
+      name: routerPaths.Habits.name,
       component: () => import(/* webpackChunkName: "about" */ '@/views/habit/HabitList.vue'),
       beforeEnter: authCheck,
       meta: {
-        middleware: globalMiddleware
+        middleware: globalMiddleware,
+        title: routerPaths.Habits.title
       }
     },
     {
       path: '/todayshabits',
-      name: routerPaths.TodaysHabits,
+      name: routerPaths.TodaysHabits.name,
       component: () => import(/* webpackChunkName: "about" */ '@/views/habit/TodaysHabits.vue'),
       beforeEnter: authCheck,
       meta: {
-        middleware: globalMiddleware
+        middleware: globalMiddleware,
+        title: routerPaths.TodaysHabits.title
       }
     },
     {
       path: '/archivedhabits',
-      name: routerPaths.ArchivedHabitList,
+      name: routerPaths.ArchivedHabitList.name,
       component: () => import(/* webpackChunkName: "about" */ '@/views/habit/ArchivedHabitList.vue'),
       beforeEnter: authCheck,
       meta: {
-        middleware: globalMiddleware
+        middleware: globalMiddleware,
+        title: routerPaths.ArchivedHabitList.title
       }
     },
     {
       path: '/about',
-      name: routerPaths.about,
+      name: routerPaths.About.name,
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
@@ -114,28 +149,31 @@ const router = new Router({
     },
     {
       path: '/user/home',
-      name: routerPaths.UserHome,
+      name: routerPaths.UserHome.name,
       component: () => import(/* webpackChunkName: "about" */ '@/views/user/home.vue'),
       beforeEnter: authCheck,
       meta: {
-        middleware: globalMiddleware
+        middleware: globalMiddleware,
+        title: routerPaths.UserHome.title
       }
     },
     {
       path: '/404',
-      name: routerPaths.NotFound404,
+      name: routerPaths.NotFound404.name,
       component: () => import(/* webpackChunkName: "about" */ '@/views/oAccess/404.vue'),
       meta: {
-        middleware: globalMiddleware
+        middleware: globalMiddleware,
+        title: routerPaths.NotFound404.title
       }
     },
     {
       path: '/user/settings',
-      name: routerPaths.UserSettings,
+      name: routerPaths.UserSettings.name,
       component: () => import(/* webpackChunkName: "about" */ '@/views/user/settings.vue'),
       beforeEnter: authCheck,
       meta: {
-        middleware: globalMiddleware
+        middleware: globalMiddleware,
+        title: routerPaths.UserSettings.title
       }
     }
   ]

@@ -3,9 +3,10 @@
     <v-app-bar dark>
       <v-app-bar-nav-icon v-if="showLogInButton" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-toolbar-title class="headline text-uppercase">
+      <v-toolbar-title class="headline text-uppercase center-text">
         <span>Vänliga</span>
         <span class="font-weight-light">Vanor</span>
+        <span class="font-weight-light text-capitalize"> - {{this.$route.meta.title}}</span>
       </v-toolbar-title>
 
       <div class="flex-grow-1"></div>
@@ -71,7 +72,6 @@ export default {
       this.$router.push('/login')
     },
     logout () {
-      console.log(this.$router)
       this.$router.push('/login')
       // this.$store.dispatch('logout')
     },
