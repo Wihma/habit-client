@@ -7,8 +7,9 @@ import store from '@/stores/store' // your vuex store
 // middleware
 import log from './middleware/global/log'
 import auth from './middleware/global/auth'
+import setDocumentTitle from './middleware/global/setDocumentTitle'
 
-const globalMiddleware = [log, auth]
+const globalMiddleware = [log, auth, setDocumentTitle]
 
 const routerPaths = {
   Login: {
