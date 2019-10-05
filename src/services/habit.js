@@ -18,8 +18,9 @@ export const habitService = {
         return habits
       })
   },
-  performed (habitId, dayPerformed) {
-    return Api().post('habit/habitPerformed', { habitId: habitId, dayPerformed: dayPerformed })
+  performed (habitId, dayPerformed, statistics) {
+    console.log({ servicemethod: 'performed', payload: { habitId: habitId, dayPerformed: dayPerformed, statistics: statistics } })
+    return Api().post('habit/habitPerformed', { habitId: habitId, dayPerformed: dayPerformed, statistics: statistics })
       .then(handleResponse)
       .then((response) => {
 

@@ -88,7 +88,7 @@ export default {
       this.$store
         .dispatch('login', {
           email: this.email.toLowerCase(),
-          password: this.password
+          password: this.password // .toLowerCase().trim()
         })
         .then(
           res => {
