@@ -71,6 +71,7 @@ export default {
         this.display.addUnit = true
         this.display.complete = true
       } else {
+        this.amount = null
         this.complete()
       }
 

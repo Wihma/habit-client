@@ -45,16 +45,6 @@ export const habits = {
         return state.habits.find(habit => habit._id === _id)
       }
     },
-    // getLatestPerformedByHabitId: (state, getters) => (_id) => {
-    //   let daysPerformed = getters.getHabitById(_id).daysPerformed
-    //   return daysPerformed[daysPerformed.length - 1]
-    // },
-    // getHabitPerformedId: (state, id) => {
-    //   return state.habitsPerformed.find(p => p.id === parseInt(id))
-    // },
-    // getHabitPerformedByHabitId: (state) => (id) => {
-    //   return state.habitsPerformed.find(p => p.habitId === parseInt(id))
-    // },
     getTodaysHabits: (state) => {
       // returns all habits due today in chronologically
 
@@ -113,11 +103,11 @@ export const habits = {
       return todaysHabits
     },
     // Habit statistics
-    getCurrentStreak: (state) => {
-      return 10
+    getCurrentStreak: (state, getters) => (_id) => {
+      return getters.getHabitById(_id).statistics.currentStreak
     },
-    getLongestStreak: (state) => {
-      return 11
+    getLongestStreak: (state, getters) => (_id) => {
+      return getters.getHabitById(_id).statistics.longestStreak
     },
     getLongestTime: (state, getters) => (_id) => {
       let longestTime = Math.max.apply(Math, getters.getHabitById(_id).daysPerformed.map((perf) => {
@@ -157,6 +147,42 @@ export const habits = {
     },
     getTotalHabitPerformed: (state, getters) => (_id) => {
       return getters.getHabitById(_id).daysPerformed.length
+    },
+    getAllPerformedDates: (state, getters) => (_id) => {
+      return getters.getHabitById(_id).daysPerformed
+    },
+    getAllPerformedDatesStub: (state, getters) => (_id) => {
+      // create dayPerformed data stubs
+
+      let data = []
+
+      function getRandomInt (max) {
+        return Math.floor(Math.random() * Math.floor(max))
+      }
+      let start = new Date()
+      start = new Date(start.setMonth(start.getMonth() - 2))
+      let stop = new Date()
+      stop = new Date(stop.setMonth(stop.getMonth() - 2))
+
+      for (let i = 0; i < 60; i++) {
+        start.setDate(start.getDate() + 1)
+        start.setHours(10)
+
+        stop.setDate(stop.getDate() + 1)
+        stop.setHours(10)
+        stop.setMinutes(getRandomInt(30))
+
+        data.push(
+          {
+            'time': {
+              'start': start.getTime(),
+              'stop': stop.getTime()
+            },
+            'amount': getRandomInt(50)
+          }
+        )
+      }
+      return data
     }
   },
   mutations: {
@@ -275,7 +301,6 @@ export const habits = {
         } else {
           commit('increaseStreak', habitId)
         }
-        console.log({ statistics: habit.statistics })
         habitService.performed(habitId, dayPerformed, habit.statistics)
           .then(
             (data) => {
