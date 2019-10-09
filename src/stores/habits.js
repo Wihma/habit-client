@@ -164,7 +164,7 @@ export const habits = {
       let stop = new Date()
       stop = new Date(stop.setMonth(stop.getMonth() - 2))
 
-      for (let i = 0; i < 60; i++) {
+      for (let i = 0; i < 30; i++) {
         start.setDate(start.getDate() + 1)
         start.setHours(10)
 
