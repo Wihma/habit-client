@@ -24,6 +24,10 @@ const routerPaths = {
     name: 'Habits',
     title: 'Habits'
   },
+  HabitStatistics: {
+    name: 'Statistics',
+    title: 'Statistics'
+  },
   Home: {
     name: 'Home',
     title: 'Home'
@@ -108,6 +112,16 @@ const router = new Router({
       meta: {
         middleware: globalMiddleware,
         title: routerPaths.Habit.title
+      }
+    },
+    {
+      path: '/habit/statistics/:id',
+      name: routerPaths.HabitStatistics.name,
+      component: () => import(/* webpackChunkName: "about" */ '@/views/habit/statistics.vue'),
+      beforeEnter: authCheck,
+      meta: {
+        middleware: globalMiddleware,
+        title: routerPaths.HabitStatistics.title
       }
     },
     {
@@ -199,9 +213,11 @@ function nextFactory (context, middleware, index) {
 }
 
 router.beforeEach((to, from, next) => {
-  if (!(to.name in routerPaths)) {
-    next({ path: '/404' })
-  }
+  // console.log({ name: to.name })
+  // console.log({ routerPaths })
+  // if (!(to.name in routerPaths)) {
+  //   next({ path: '/404' })
+  // }
   if (to.meta.middleware) {
     const middleware = Array.isArray(to.meta.middleware)
       ? to.meta.middleware

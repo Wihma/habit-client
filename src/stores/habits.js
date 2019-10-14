@@ -1,8 +1,5 @@
 import { habitService } from '@/services/habit'
 import Vue from 'vue'
-// import Vuex from 'vuex'
-// import { authService } from '@/services/Auth'
-// import { router } from '@/routers/router'
 
 export const habits = {
   state: {
@@ -14,63 +11,9 @@ export const habits = {
       measureTime: true
     },
     habits: [
-      // {
-      //   id: 3,
-      //   name: 'Push-ups',
-      //   description: 'Do one pushup per day!',
-      //   active: true,
-      //   selectedWeekdays:[1, 2, 3, 4, 5, 6, 7],
-      //   time: "12:00",
-      //   measureTime: true,
-      //   measureWUnit: true,
-      //   measureUnit: 'St',
-      //   todayPerformedId: 30
-      // },
-      // {
-      //   id: 1,
-      //   name: 'Lunch boxes',
-      //   description: 'Prepare a lunchbox for work every evening!',
-      //   active: false,
-      //   selectedWeekdays:[1, 2, 3, 4, 5, 6, 7],
-      //   time: "10:00",
-      //   measureTime: true,
-      //   measureWUnit: false,
-      //   todayPerformedId: 10
-      // },
-      // {
-      //   id: 2,
-      //   name: 'Meditate',
-      //   description: 'Sit down, close your eyes and take one deep breath!',
-      //   active: true,
-      //   selectedWeekdays:[1, 2, 3, 4, 5, 6, 7],
-      //   time: "08:00",
-      //   measureTime: true,
-      //   measureWUnit: true,
-      //   measureUnit: 'Min',
-      //   todayPerformedId: 20
-      // },
-      // {
-      //   id: 4,
-      //   name: 'Call momma',
-      //   description: 'Just call her',
-      //   active: true,
-      //   selectedWeekdays:[1, 2, 3, 4, 5, 6, 7],
-      //   time: "15:00",
-      //   measureTime: true,
-      //   measureWUnit: true,
-      //   measureUnit: 'St',
-      //   todayPerformedId: 30
-      // },
-    ],
-    habitsPerformed: [
-
     ]
   },
   getters: {
-    // allHabits: (state) => {
-    //
-    //   return state.habits.filter(habit => habit.active === true)
-    // },
     allUserHabits: (state) => {
       if (Object.keys(state.habits).length > 0) {
         return state.habits.filter(habit => habit.active === true)
@@ -79,7 +22,7 @@ export const habits = {
       }
     },
     habitsExist: (state) => {
-      if (state.habits.lenght > 0) {
+      if (state.habits.length > 0) {
         return true
       } else {
         return false
@@ -101,12 +44,6 @@ export const habits = {
       } else {
         return state.habits.find(habit => habit._id === _id)
       }
-    },
-    getHabitPerformedId: (state) => (id) => {
-      return state.habitsPerformed.find(p => p.id === parseInt(id))
-    },
-    getHabitPerformedByHabitId: (state) => (id) => {
-      return state.habitsPerformed.find(p => p.habitId === parseInt(id))
     },
     getTodaysHabits: (state) => {
       // returns all habits due today in chronologically
@@ -137,7 +74,6 @@ export const habits = {
       )
 
       todaysHabits = todaysHabits.filter(habit => habit.active === true)
-
       todaysHabits = todaysHabits.filter((habit) => {
         let today = new Date().setHours(0, 0, 0, 0)
         let daysPerformed = habit.daysPerformed.sort(function (a, b) {
@@ -145,8 +81,8 @@ export const habits = {
         })
 
         var latestDay = null
-        if (daysPerformed.lenght > 1 && daysPerformed !== undefined) {
-          latestDay = daysPerformed[daysPerformed.lenght - 1]
+        if (daysPerformed.length > 1 && daysPerformed !== undefined) {
+          latestDay = daysPerformed[daysPerformed.length - 1]
         } else {
           latestDay = daysPerformed[0]
         }
@@ -165,12 +101,94 @@ export const habits = {
         return a.time > b.time
       })
       return todaysHabits
+    },
+    // Habit statistics
+    getCurrentStreak: (state, getters) => (_id) => {
+      return getters.getHabitById(_id).statistics.currentStreak
+    },
+    getLongestStreak: (state, getters) => (_id) => {
+      return getters.getHabitById(_id).statistics.longestStreak
+    },
+    getLongestTime: (state, getters) => (_id) => {
+      let longestTime = Math.max.apply(Math, getters.getHabitById(_id).daysPerformed.map((perf) => {
+        return Math.abs(new Date(perf.time.start) - new Date(perf.time.stop))
+      }))
+
+      return Math.round((longestTime / 1000 / 60)) + 'min'
+    },
+    getAvgTime: (state, getters) => (_id, dayIntervall) => {
+      // validate input data
+      if (!_id) {
+        return 'habit not found'
+      }
+      let to = new Date()
+      let from = to.setMonth(to.getMonth - 1)
+      if (typeof dayIntervall !== 'object') {
+        dayIntervall = {
+          from: from,
+          to: to
+        }
+      } else if (!dayIntervall.hasOwnProperty('from')) {
+        dayIntervall.from = from
+      } else if (!dayIntervall.hasOwnProperty('to')) {
+        dayIntervall.to = to
+      }
+      if (!dayIntervall) {
+        dayIntervall = 30
+      }
+
+      let habit = getters.getHabitById(_id)// state.habits.find(h => h._id === _id)
+      let totalTime = 0
+      habit.daysPerformed.forEach(perf => {
+        totalTime += Math.abs(new Date(perf.time.start).getTime() - new Date(perf.time.stop).getTime())
+      })
+      // avg time in nearest seconds
+      return Math.round((totalTime / habit.daysPerformed.length) / 1000)
+    },
+    getTotalHabitPerformed: (state, getters) => (_id) => {
+      return getters.getHabitById(_id).daysPerformed.length
+    },
+    getAllPerformedDates: (state, getters) => (_id) => {
+      return getters.getHabitById(_id).daysPerformed
+    },
+    getAllPerformedDatesStub: (state, getters) => (_id) => {
+      // create dayPerformed data stubs
+
+      let data = []
+
+      function getRandomInt (max) {
+        return Math.floor(Math.random() * Math.floor(max))
+      }
+      let start = new Date()
+      start = new Date(start.setMonth(start.getMonth() - 2))
+      let stop = new Date()
+      stop = new Date(stop.setMonth(stop.getMonth() - 2))
+
+      for (let i = 0; i < 30; i++) {
+        start.setDate(start.getDate() + 1)
+        start.setHours(10)
+
+        stop.setDate(stop.getDate() + 1)
+        stop.setHours(10)
+        stop.setMinutes(getRandomInt(30))
+
+        data.push(
+          {
+            'time': {
+              'start': start.getTime(),
+              'stop': stop.getTime()
+            },
+            'amount': getRandomInt(50)
+          }
+        )
+      }
+      return data
     }
   },
   mutations: {
-    getAllHabits: (state, habits) => {
-      state.habits = habits
-    },
+    // getAllHabits: (state, habits) => {
+    //   state.habits = habits
+    // },
     setAllHabitsForUser: (state, habits) => {
       state.habits = habits
     },
@@ -185,30 +203,24 @@ export const habits = {
           allHabits.splice(habitIndex, 1)
 
           Vue.set(state, 'habits', habit)
-          // allHabits.push(habit)
         }
       } catch {
-        // state.habits.push(habit);
         Vue.set(state, 'habits', habit)
       }
     },
     saveTodayPerformed: (state, payload) => {
       let tmpHabitPerformed
-      // payload = {habitid: id, todayPerformed: todayPerformed}
-      // if error create new todayPerformed
 
       try {
         tmpHabitPerformed = state.habits.find(h => h._id === payload.habitId)
         tmpHabitPerformed.daysPerformed.push(payload.dayPerformed)
       } catch {
-        // state.todayPerformed.push
         tmpHabitPerformed = {
           id: 0,
           habitId: payload.habitId,
           days: []
         }
         tmpHabitPerformed.days.push(payload.dayPerformed)
-        state.habitsPerformed.push(tmpHabitPerformed)
       }
     },
     refreshTodaysHabits: (state) => {
@@ -221,6 +233,24 @@ export const habits = {
       state.habits.splice(state.habits.findIndex((habit) => {
         return habit._id === habitId
       }), 1)
+    },
+    increaseStreak: (state, habitId) => {
+      let habit = state.habits.find(h => h._id === habitId)
+      if (!habit.hasOwnProperty('statistics')) {
+        habit.statistics = {}
+        habit.statistics.currentStreak = 1
+        habit.statistics.longestStreak = 1
+      } else {
+        habit.statistics.currentStreak++
+      }
+
+      if (!habit.statistics.hasOwnProperty('longestStreak') || habit.currentStreak >= habit.longestStreak) {
+        habit.statistics.longestStreak = habit.currentStreak
+      }
+    },
+    resetStreak: (state, habitId) => {
+      let habit = state.habits.find(h => h._id === habitId)
+      habit.statistics.currentStreak = 1
     }
   },
   actions: {
@@ -244,17 +274,44 @@ export const habits = {
         )
     },
     updateHabit ({ dispatch, commit }, { habit }) {
-      // should I wait for the server to update? It will reduce the respondiveness of the app.
+      // should I wait for the server to update? It will reduce the responsiveness of the app.
       return habitService.update(habit)
         .then(
           commit('saveHabit', { habit: habit })
         )
     },
-    saveTodayPerformed ({ dispatch, commit }, { habitId, dayPerformed }) {
-      return habitService.performed(habitId, dayPerformed)
-        .then(
-          commit('saveTodayPerformed', { habitId: habitId, dayPerformed: dayPerformed })
-        )
+    saveTodayPerformed ({ dispatch, commit, state }, { habitId, dayPerformed }) {
+      return new Promise((resolve, reject) => {
+        let habit = state.habits.find(h => h._id === habitId)
+
+        let daysPerformed = habit.daysPerformed
+
+        if (daysPerformed.length > 0) {
+          let latestPerformedDate = new Date(daysPerformed[daysPerformed.length - 1].time.stop)
+
+          let dayPerformedDate = new Date(dayPerformed.time.start)
+
+          if (latestPerformedDate.getFullYear() === dayPerformedDate.getFullYear() ||
+            latestPerformedDate.getMonth() === dayPerformedDate.getMonthYear() ||
+            latestPerformedDate.getDay() === (dayPerformedDate.getMonthDay() - 1)) {
+            commit('increaseStreak', habitId)
+          } else {
+            commit('resetStreak', habitId)
+          }
+        } else {
+          commit('increaseStreak', habitId)
+        }
+        habitService.performed(habitId, dayPerformed, habit.statistics)
+          .then(
+            (data) => {
+              commit('saveTodayPerformed', { habitId: habitId, dayPerformed: dayPerformed })
+              resolve(data)
+            },
+            (err) => {
+              reject(err)
+            }
+          )
+      })
     },
     deleteHabit ({ dispatch, commit }, { _id }) {
       return habitService.delete(_id)

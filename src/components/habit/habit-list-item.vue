@@ -8,7 +8,7 @@
 
     <v-card-actions>
       <v-btn @click="goToHabit(habit._id)" dark color="purple">Edit</v-btn>
-      <v-btn dark color="teal accent-3">Statistics</v-btn>
+      <v-btn @click="goToHabitStatistics(habit._id)" dark color="teal accent-3">Statistics</v-btn>
       <v-spacer></v-spacer>
       <v-btn icon @click="show = !show">
         <v-icon>{{ show ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
@@ -35,6 +35,9 @@ export default {
   methods: {
     goToHabit (_id) {
       this.$router.push('habit/' + _id)
+    },
+    goToHabitStatistics (_id) {
+      this.$router.push('habit/statistics/' + _id)
     }
   },
   mounted () {

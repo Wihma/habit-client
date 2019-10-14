@@ -71,6 +71,7 @@ export default {
         this.display.addUnit = true
         this.display.complete = true
       } else {
+        this.amount = null
         this.complete()
       }
 
@@ -88,7 +89,6 @@ export default {
       } else {
         this.display.addUnit = false
         this.habit.visible = false
-
         this.$store.dispatch('saveTodayPerformed', {
           habitId: this.habit._id,
           dayPerformed: {
