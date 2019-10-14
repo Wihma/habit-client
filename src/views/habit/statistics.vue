@@ -29,14 +29,7 @@
     <v-row>
       <v-col>
         <v-card class="barchart-container" outlined tile text->
-          <!-- <ul>
-            <li>Area Chart</li>
-            <li>Y-axis is length habit was performed</li>
-            <li>Can have shadowed unit number if that was selected</li>
-            <li>X axis should be the last 30 days, but should be possible to scroll out</li>
-          </ul>-->
-          <!-- <h2 class="pt-2 text-center">Habit past 30 days</h2> -->
-          <line-chart daysPerformed="daysPerformed" habitId="habit._id"></line-chart>
+          <line-chart :habitId="habit._id"></line-chart>
         </v-card>
       </v-col>
     </v-row>
@@ -93,7 +86,7 @@ export default {
 }
 </script>
 
-<style >
+<style scoped>
 @media screen and (min-width: 1280px) {
   .container {
     max-width: 1280px;
@@ -124,7 +117,7 @@ export default {
 
 .stats ul {
   list-style-type: none;
-  font-size: 2em;
+  font-size: 1.2em;
 }
 
 </style>
